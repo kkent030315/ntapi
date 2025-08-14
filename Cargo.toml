@@ -28,7 +28,7 @@ targets = [
 ]
 
 [dependencies.windows-sys]
-version = "0.48.0"
+version = "0.60"
 features = [
   'Win32_Devices_DeviceAndDriverInstallation',
   'Win32_Foundation',
@@ -49,6 +49,7 @@ features = [
   'Win32_System_Threading',
   'Win32_System_WindowsProgramming',
   'Win32_UI_WindowsAndMessaging',
+  'Wdk_Foundation',
 ]
 
 [features]

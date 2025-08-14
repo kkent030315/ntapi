@@ -1,8 +1,11 @@
-use windows_sys::Win32::{
-    Foundation::{HANDLE, NTSTATUS, UNICODE_STRING},
-    Security::{GENERIC_MAPPING, PSECURITY_DESCRIPTOR},
-    Storage::FileSystem::STANDARD_RIGHTS_REQUIRED,
-    System::{Kernel::WAIT_TYPE, WindowsProgramming::OBJECT_ATTRIBUTES},
+use windows_sys::{
+    Wdk::Foundation::OBJECT_ATTRIBUTES,
+    Win32::{
+        Foundation::{HANDLE, NTSTATUS, UNICODE_STRING},
+        Security::{GENERIC_MAPPING, PSECURITY_DESCRIPTOR},
+        Storage::FileSystem::STANDARD_RIGHTS_REQUIRED,
+        System::Kernel::WAIT_TYPE,
+    },
 };
 
 use crate::{

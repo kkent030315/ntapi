@@ -1,17 +1,15 @@
 use windows_sys::{
     core::GUID,
+    Wdk::Foundation::OBJECT_ATTRIBUTES,
     Win32::{
-        Foundation::{HANDLE, NTSTATUS, PSID, UNICODE_STRING},
+        Foundation::{HANDLE, NTSTATUS, UNICODE_STRING},
         Security::SID,
         Storage::FileSystem::{
             FILE_ID_128, FILE_READ_DATA, FILE_SEGMENT_ELEMENT, FILE_WRITE_DATA,
         },
-        System::{
-            Ioctl::{
-                FILE_ANY_ACCESS, FILE_DEVICE_MAILSLOT, FILE_DEVICE_NAMED_PIPE,
-                METHOD_BUFFERED, METHOD_NEITHER,
-            },
-            WindowsProgramming::OBJECT_ATTRIBUTES,
+        System::Ioctl::{
+            FILE_ANY_ACCESS, FILE_DEVICE_MAILSLOT, FILE_DEVICE_NAMED_PIPE,
+            METHOD_BUFFERED, METHOD_NEITHER,
         },
     },
 };
@@ -1047,7 +1045,7 @@ EXTERN! {extern "system" {
         ReturnSingleEntry: c_uchar,
         SidList: *mut c_void,
         SidListLength: c_ulong,
-        StartSid: PSID,
+        StartSid: SID,
         RestartScan: c_uchar,
     ) -> NTSTATUS;
     fn NtSetQuotaInformationFile(

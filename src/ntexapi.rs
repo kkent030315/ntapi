@@ -6,6 +6,7 @@ use core::{mem::MaybeUninit, ptr::read_volatile};
 
 use windows_sys::{
     core::GUID,
+    Wdk::Foundation::OBJECT_ATTRIBUTES,
     Win32::{
         Foundation::{HANDLE, LUID, NTSTATUS, UNICODE_STRING},
         Security::{GENERIC_MAPPING, PSECURITY_DESCRIPTOR},
@@ -17,7 +18,6 @@ use windows_sys::{
             Kernel::{EVENT_TYPE, NT_PRODUCT_TYPE, TIMER_TYPE, WNF_STATE_NAME},
             SystemInformation::{FIRMWARE_TYPE, GROUP_AFFINITY},
             SystemServices::ANYSIZE_ARRAY,
-            WindowsProgramming::OBJECT_ATTRIBUTES,
         },
     },
 };

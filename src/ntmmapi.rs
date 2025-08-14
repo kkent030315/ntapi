@@ -1,8 +1,9 @@
-use windows_sys::Win32::{
-    Foundation::{HANDLE, NTSTATUS, UNICODE_STRING},
-    Storage::FileSystem::{STANDARD_RIGHTS_REQUIRED, SYNCHRONIZE},
-    System::{
-        Memory::CFG_CALL_TARGET_INFO, WindowsProgramming::OBJECT_ATTRIBUTES,
+use windows_sys::{
+    Wdk::Foundation::OBJECT_ATTRIBUTES,
+    Win32::{
+        Foundation::{HANDLE, NTSTATUS, UNICODE_STRING},
+        Storage::FileSystem::{STANDARD_RIGHTS_REQUIRED, SYNCHRONIZE},
+        System::Memory::CFG_CALL_TARGET_INFO,
     },
 };
 

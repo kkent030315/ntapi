@@ -1,13 +1,10 @@
 use windows_sys::Win32::{
     Foundation::{HANDLE, NTSTATUS},
-    System::{
-        SystemServices::TP_CLEANUP_GROUP,
-        Threading::{
-            PTP_CALLBACK_INSTANCE, PTP_IO, PTP_POOL, PTP_SIMPLE_CALLBACK,
-            PTP_TIMER, PTP_TIMER_CALLBACK, PTP_WAIT, PTP_WAIT_CALLBACK,
-            PTP_WORK, PTP_WORK_CALLBACK, RTL_CRITICAL_SECTION,
-            TP_CALLBACK_ENVIRON_V3, TP_POOL_STACK_INFORMATION,
-        },
+    System::Threading::{
+        CRITICAL_SECTION, PTP_CALLBACK_INSTANCE, PTP_CLEANUP_GROUP, PTP_IO,
+        PTP_POOL, PTP_SIMPLE_CALLBACK, PTP_TIMER, PTP_TIMER_CALLBACK, PTP_WAIT,
+        PTP_WAIT_CALLBACK, PTP_WORK, PTP_WORK_CALLBACK, TP_CALLBACK_ENVIRON_V3,
+        TP_POOL_STACK_INFORMATION,
     },
 };
 
@@ -56,13 +53,13 @@ EXTERN! {extern "system" {
         PoolStackInformation: *mut TP_POOL_STACK_INFORMATION,
     ) -> NTSTATUS;
     fn TpAllocCleanupGroup(
-        CleanupGroupReturn: *mut *mut TP_CLEANUP_GROUP,
+        CleanupGroupReturn: *mut *mut PTP_CLEANUP_GROUP,
     ) -> NTSTATUS;
     fn TpReleaseCleanupGroup(
-        CleanupGroup: *mut TP_CLEANUP_GROUP,
+        CleanupGroup: *mut PTP_CLEANUP_GROUP,
     );
     fn TpReleaseCleanupGroupMembers(
-        CleanupGroup: *mut TP_CLEANUP_GROUP,
+        CleanupGroup: *mut PTP_CLEANUP_GROUP,
         CancelPendingCallbacks: c_ulong,
         CleanupParameter: *mut c_void,
     );
@@ -81,7 +78,7 @@ EXTERN! {extern "system" {
     );
     fn TpCallbackLeaveCriticalSectionOnCompletion(
         Instance: PTP_CALLBACK_INSTANCE,
-        CriticalSection: *mut RTL_CRITICAL_SECTION,
+        CriticalSection: *mut CRITICAL_SECTION,
     );
     fn TpCallbackUnloadDllOnCompletion(
         Instance: PTP_CALLBACK_INSTANCE,

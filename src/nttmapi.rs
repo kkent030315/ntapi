@@ -1,16 +1,14 @@
 use windows_sys::{
     core::GUID,
+    Wdk::Foundation::OBJECT_ATTRIBUTES,
     Win32::{
         Foundation::{HANDLE, NTSTATUS, UNICODE_STRING},
         Storage::FileSystem::TRANSACTION_NOTIFICATION,
-        System::{
-            SystemServices::{
-                ENLISTMENT_INFORMATION_CLASS, KTMOBJECT_CURSOR, KTMOBJECT_TYPE,
-                RESOURCEMANAGER_INFORMATION_CLASS,
-                TRANSACTIONMANAGER_INFORMATION_CLASS,
-                TRANSACTION_INFORMATION_CLASS,
-            },
-            WindowsProgramming::OBJECT_ATTRIBUTES,
+        System::SystemServices::{
+            ENLISTMENT_INFORMATION_CLASS, KTMOBJECT_CURSOR, KTMOBJECT_TYPE,
+            RESOURCEMANAGER_INFORMATION_CLASS,
+            TRANSACTIONMANAGER_INFORMATION_CLASS,
+            TRANSACTION_INFORMATION_CLASS,
         },
     },
 };

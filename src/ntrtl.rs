@@ -7,11 +7,11 @@ use windows_sys::Win32::System::Diagnostics::Debug::{
 use windows_sys::{
     core::GUID,
     Win32::{
-        Foundation::{HANDLE, LUID, NTSTATUS, PSID, UNICODE_STRING},
+        Foundation::{HANDLE, LUID, NTSTATUS, UNICODE_STRING},
         Networking::WinSock::{IN6_ADDR, IN_ADDR},
         Security::{
             ACL, ACL_INFORMATION_CLASS, GENERIC_MAPPING, LUID_AND_ATTRIBUTES,
-            PSECURITY_DESCRIPTOR, SECURITY_DESCRIPTOR_CONTROL,
+            PSECURITY_DESCRIPTOR, PSID, SECURITY_DESCRIPTOR_CONTROL,
             SECURITY_IMPERSONATION_LEVEL, SID_AND_ATTRIBUTES,
             SID_AND_ATTRIBUTES_HASH, SID_IDENTIFIER_AUTHORITY,
         },
@@ -34,9 +34,9 @@ use windows_sys::{
                 OSVERSIONINFOEXW, OSVERSIONINFOW, OS_DEPLOYEMENT_STATE_VALUES,
             },
             Threading::{
-                APC_CALLBACK_FUNCTION, LPTHREAD_START_ROUTINE,
-                PFLS_CALLBACK_FUNCTION, RTL_BARRIER, RTL_CONDITION_VARIABLE,
-                RTL_CRITICAL_SECTION, RTL_CRITICAL_SECTION_DEBUG, RTL_SRWLOCK,
+                APC_CALLBACK_FUNCTION, CONDITION_VARIABLE, CRITICAL_SECTION,
+                CRITICAL_SECTION_DEBUG, LPTHREAD_START_ROUTINE,
+                PFLS_CALLBACK_FUNCTION, SRWLOCK, SYNCHRONIZATION_BARRIER,
                 WAITORTIMERCALLBACK, WORKERCALLBACKFUNC,
             },
         },
@@ -589,35 +589,35 @@ EXTERN! {extern "system" {
         Enumerator: PRTL_DYNAMIC_HASH_TABLE_ENUMERATOR,
     );
     fn RtlInitializeCriticalSection(
-        CriticalSection: *mut RTL_CRITICAL_SECTION,
+        CriticalSection: *mut CRITICAL_SECTION,
     ) -> NTSTATUS;
     fn RtlInitializeCriticalSectionAndSpinCount(
-        CriticalSection: *mut RTL_CRITICAL_SECTION,
+        CriticalSection: *mut CRITICAL_SECTION,
         SpinCount: c_ulong,
     ) -> NTSTATUS;
     fn RtlDeleteCriticalSection(
-        CriticalSection: *mut RTL_CRITICAL_SECTION,
+        CriticalSection: *mut CRITICAL_SECTION,
     ) -> NTSTATUS;
     fn RtlEnterCriticalSection(
-        CriticalSection: *mut RTL_CRITICAL_SECTION,
+        CriticalSection: *mut CRITICAL_SECTION,
     ) -> NTSTATUS;
     fn RtlLeaveCriticalSection(
-        CriticalSection: *mut RTL_CRITICAL_SECTION,
+        CriticalSection: *mut CRITICAL_SECTION,
     ) -> NTSTATUS;
     fn RtlTryEnterCriticalSection(
-        CriticalSection: *mut RTL_CRITICAL_SECTION,
+        CriticalSection: *mut CRITICAL_SECTION,
     ) -> c_ulong;
     fn RtlIsCriticalSectionLocked(
-        CriticalSection: *mut RTL_CRITICAL_SECTION,
+        CriticalSection: *mut CRITICAL_SECTION,
     ) -> c_ulong;
     fn RtlIsCriticalSectionLockedByThread(
-        CriticalSection: *mut RTL_CRITICAL_SECTION,
+        CriticalSection: *mut CRITICAL_SECTION,
     ) -> c_ulong;
     fn RtlGetCriticalSectionRecursionCount(
-        CriticalSection: *mut RTL_CRITICAL_SECTION,
+        CriticalSection: *mut CRITICAL_SECTION,
     ) -> c_ulong;
     fn RtlSetCriticalSectionSpinCount(
-        CriticalSection: *mut RTL_CRITICAL_SECTION,
+        CriticalSection: *mut CRITICAL_SECTION,
         SpinCount: c_ulong,
     ) -> c_ulong;
     fn RtlQueryCriticalSectionOwner(
@@ -628,7 +628,7 @@ EXTERN! {extern "system" {
     );
 }}
 STRUCT! {struct RTL_RESOURCE {
-    CriticalSection: RTL_CRITICAL_SECTION,
+    CriticalSection: CRITICAL_SECTION,
     SharedSemaphore: HANDLE,
     NumberOfWaitingShared: c_ulong,
     ExclusiveSemaphore: HANDLE,
@@ -636,7 +636,7 @@ STRUCT! {struct RTL_RESOURCE {
     NumberOfActive: c_long,
     ExclusiveOwnerThread: HANDLE,
     Flags: c_ulong,
-    DebugInfo: *mut RTL_CRITICAL_SECTION_DEBUG,
+    DebugInfo: *mut CRITICAL_SECTION_DEBUG,
 }}
 pub type PRTL_RESOURCE = *mut RTL_RESOURCE;
 pub const RTL_RESOURCE_FLAG_LONG_TERM: c_ulong = 0x00000001;
@@ -665,48 +665,48 @@ EXTERN! {extern "system" {
         Resource: PRTL_RESOURCE,
     );
     fn RtlInitializeSRWLock(
-        SRWLock: *mut RTL_SRWLOCK,
+        SRWLock: *mut SRWLOCK,
     );
     fn RtlAcquireSRWLockExclusive(
-        SRWLock: *mut RTL_SRWLOCK,
+        SRWLock: *mut SRWLOCK,
     );
     fn RtlAcquireSRWLockShared(
-        SRWLock: *mut RTL_SRWLOCK,
+        SRWLock: *mut SRWLOCK,
     );
     fn RtlReleaseSRWLockExclusive(
-        SRWLock: *mut RTL_SRWLOCK,
+        SRWLock: *mut SRWLOCK,
     );
     fn RtlReleaseSRWLockShared(
-        SRWLock: *mut RTL_SRWLOCK,
+        SRWLock: *mut SRWLOCK,
     );
     fn RtlTryAcquireSRWLockExclusive(
-        SRWLock: *mut RTL_SRWLOCK,
+        SRWLock: *mut SRWLOCK,
     ) -> c_uchar;
     fn RtlTryAcquireSRWLockShared(
-        SRWLock: *mut RTL_SRWLOCK,
+        SRWLock: *mut SRWLOCK,
     ) -> c_uchar;
     fn RtlAcquireReleaseSRWLockExclusive(
-        SRWLock: *mut RTL_SRWLOCK,
+        SRWLock: *mut SRWLOCK,
     );
     fn RtlInitializeConditionVariable(
-        ConditionVariable: *mut RTL_CONDITION_VARIABLE,
+        ConditionVariable: *mut CONDITION_VARIABLE,
     );
     fn RtlSleepConditionVariableCS(
-        ConditionVariable: *mut RTL_CONDITION_VARIABLE,
-        CriticalSection: *mut RTL_CRITICAL_SECTION,
+        ConditionVariable: *mut CONDITION_VARIABLE,
+        CriticalSection: *mut CRITICAL_SECTION,
         Timeout: *mut LARGE_INTEGER,
     ) -> NTSTATUS;
     fn RtlSleepConditionVariableSRW(
-        ConditionVariable: *mut RTL_CONDITION_VARIABLE,
-        SRWLock: *mut RTL_SRWLOCK,
+        ConditionVariable: *mut CONDITION_VARIABLE,
+        SRWLock: *mut SRWLOCK,
         Timeout: *mut LARGE_INTEGER,
         Flags: c_ulong,
     ) -> NTSTATUS;
     fn RtlWakeConditionVariable(
-        ConditionVariable: *mut RTL_CONDITION_VARIABLE,
+        ConditionVariable: *mut CONDITION_VARIABLE,
     );
     fn RtlWakeAllConditionVariable(
-        ConditionVariable: *mut RTL_CONDITION_VARIABLE,
+        ConditionVariable: *mut CONDITION_VARIABLE,
     );
 }}
 pub const RTL_BARRIER_FLAGS_SPIN_ONLY: c_ulong = 0x00000001;
@@ -714,19 +714,19 @@ pub const RTL_BARRIER_FLAGS_BLOCK_ONLY: c_ulong = 0x00000002;
 pub const RTL_BARRIER_FLAGS_NO_DELETE: c_ulong = 0x00000004;
 EXTERN! {extern "system" {
     fn RtlInitBarrier(
-        Barrier: *mut RTL_BARRIER,
+        Barrier: *mut SYNCHRONIZATION_BARRIER,
         TotalThreads: c_ulong,
         SpinCount: c_ulong,
     ) -> NTSTATUS;
     fn RtlDeleteBarrier(
-        Barrier: *mut RTL_BARRIER,
+        Barrier: *mut SYNCHRONIZATION_BARRIER,
     ) -> NTSTATUS;
     fn RtlBarrier(
-        Barrier: *mut RTL_BARRIER,
+        Barrier: *mut SYNCHRONIZATION_BARRIER,
         Flags: c_ulong,
     ) -> c_uchar;
     fn RtlBarrierForDelete(
-        Barrier: *mut RTL_BARRIER,
+        Barrier: *mut SYNCHRONIZATION_BARRIER,
         Flags: c_ulong,
     ) -> c_uchar;
     fn RtlWaitOnAddress(
@@ -1544,10 +1544,10 @@ EXTERN! {extern "system" {
         ProcessInformation: PRTL_USER_PROCESS_INFORMATION,
     ) -> NTSTATUS;
     fn RtlUpdateClonedCriticalSection(
-        CriticalSection: *mut RTL_CRITICAL_SECTION,
+        CriticalSection: *mut CRITICAL_SECTION,
     );
     fn RtlUpdateClonedSRWLock(
-        SRWLock: *mut RTL_SRWLOCK,
+        SRWLock: *mut SRWLOCK,
         Shared: c_ulong,
     );
 }}
@@ -2500,7 +2500,7 @@ STRUCT! {struct RTL_MEMORY_ZONE_SEGMENT {
 pub type PRTL_MEMORY_ZONE_SEGMENT = *mut RTL_MEMORY_ZONE_SEGMENT;
 STRUCT! {struct RTL_MEMORY_ZONE {
     Segment: RTL_MEMORY_ZONE_SEGMENT,
-    Lock: RTL_SRWLOCK,
+    Lock: SRWLOCK,
     LockCount: c_ulong,
     FirstSegment: PRTL_MEMORY_ZONE_SEGMENT,
 }}

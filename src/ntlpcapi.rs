@@ -1,12 +1,12 @@
 use core::mem::size_of;
 
-use windows_sys::Win32::{
-    Foundation::{HANDLE, NTSTATUS, PSID, UNICODE_STRING},
-    Security::{PSECURITY_DESCRIPTOR, SECURITY_QUALITY_OF_SERVICE},
-    Storage::FileSystem::{STANDARD_RIGHTS_REQUIRED, SYNCHRONIZE},
-    System::{
-        Kernel::OBJ_CASE_INSENSITIVE, Threading::RTL_SRWLOCK,
-        WindowsProgramming::OBJECT_ATTRIBUTES,
+use windows_sys::{
+    Wdk::Foundation::OBJECT_ATTRIBUTES,
+    Win32::{
+        Foundation::{HANDLE, NTSTATUS, OBJ_CASE_INSENSITIVE, UNICODE_STRING},
+        Security::{PSECURITY_DESCRIPTOR, PSID, SECURITY_QUALITY_OF_SERVICE},
+        Storage::FileSystem::{STANDARD_RIGHTS_REQUIRED, SYNCHRONIZE},
+        System::Threading::SRWLOCK,
     },
 };
 
@@ -342,7 +342,7 @@ STRUCT! {#[repr(align(128))] struct ALPC_COMPLETION_LIST_HEADER {
     __padding3: [u32; 31],
     LogSequenceNumber: c_ulong,
     __padding4: [u64; 15],
-    UserLock: RTL_SRWLOCK,
+    UserLock: SRWLOCK,
     EndMagic: __uint64,
     __padding5: [u64; 14],
 }}

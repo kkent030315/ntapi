@@ -1,14 +1,19 @@
-use windows_sys::Win32::{
-    Foundation::{HANDLE, NTSTATUS, PSID, UNICODE_STRING},
-    Security::{
-        Authentication::Identity::{DOMAIN_PASSWORD_INFORMATION, LOGON_HOURS},
-        PSECURITY_DESCRIPTOR, SID_NAME_USE,
+use windows_sys::{
+    Wdk::Foundation::OBJECT_ATTRIBUTES,
+    Win32::{
+        Foundation::{HANDLE, NTSTATUS, UNICODE_STRING},
+        Security::{
+            Authentication::Identity::{
+                DOMAIN_PASSWORD_INFORMATION, LOGON_HOURS,
+            },
+            PSECURITY_DESCRIPTOR, PSID, SID_NAME_USE,
+        },
+        Storage::FileSystem::{
+            STANDARD_RIGHTS_EXECUTE, STANDARD_RIGHTS_READ,
+            STANDARD_RIGHTS_REQUIRED, STANDARD_RIGHTS_WRITE,
+        },
+        System::Kernel::STRING,
     },
-    Storage::FileSystem::{
-        STANDARD_RIGHTS_EXECUTE, STANDARD_RIGHTS_READ,
-        STANDARD_RIGHTS_REQUIRED, STANDARD_RIGHTS_WRITE,
-    },
-    System::{Kernel::STRING, WindowsProgramming::OBJECT_ATTRIBUTES},
 };
 
 use crate::{

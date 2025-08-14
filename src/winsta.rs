@@ -1,7 +1,8 @@
 use core::ptr::null_mut;
 
 use windows_sys::Win32::{
-    Foundation::{FILETIME, HANDLE, HWND, PSID, UNICODE_STRING},
+    Foundation::{FILETIME, HANDLE, HWND, UNICODE_STRING},
+    Security::PSID,
     Storage::FileSystem::STANDARD_RIGHTS_REQUIRED,
 };
 

@@ -1,14 +1,20 @@
-use windows_sys::Win32::{
-    Foundation::{HANDLE, NTSTATUS, UNICODE_STRING},
-    System::{
-        Kernel::{LIST_ENTRY, RTL_BALANCED_NODE, SINGLE_LIST_ENTRY, STRING},
-        SystemServices::{
-            IMAGE_BASE_RELOCATION, IMAGE_IMPORT_DESCRIPTOR,
-            IMAGE_RESOURCE_DATA_ENTRY, IMAGE_RESOURCE_DIRECTORY,
-            IMAGE_RESOURCE_DIRECTORY_ENTRY, IMAGE_RESOURCE_DIRECTORY_STRING,
-        },
-        WindowsProgramming::{
-            IMAGE_DELAYLOAD_DESCRIPTOR, IMAGE_THUNK_DATA64, OBJECT_ATTRIBUTES,
+use windows_sys::{
+    Wdk::Foundation::OBJECT_ATTRIBUTES,
+    Win32::{
+        Foundation::{HANDLE, NTSTATUS, UNICODE_STRING},
+        System::{
+            Kernel::{
+                LIST_ENTRY, RTL_BALANCED_NODE, SINGLE_LIST_ENTRY, STRING,
+            },
+            SystemServices::{
+                IMAGE_BASE_RELOCATION, IMAGE_IMPORT_DESCRIPTOR,
+                IMAGE_RESOURCE_DATA_ENTRY, IMAGE_RESOURCE_DIRECTORY,
+                IMAGE_RESOURCE_DIRECTORY_ENTRY,
+                IMAGE_RESOURCE_DIRECTORY_STRING,
+            },
+            WindowsProgramming::{
+                IMAGE_DELAYLOAD_DESCRIPTOR, IMAGE_THUNK_DATA64,
+            },
         },
     },
 };

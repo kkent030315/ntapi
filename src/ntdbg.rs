@@ -1,14 +1,12 @@
 use windows_sys::{
     core::GUID,
+    Wdk::Foundation::OBJECT_ATTRIBUTES,
     Win32::{
         Foundation::{HANDLE, NTSTATUS},
         Storage::FileSystem::{STANDARD_RIGHTS_REQUIRED, SYNCHRONIZE},
-        System::{
-            Diagnostics::{
-                Debug::{DEBUG_EVENT, EXCEPTION_RECORD},
-                Etw::EVENT_FILTER_DESCRIPTOR,
-            },
-            WindowsProgramming::OBJECT_ATTRIBUTES,
+        System::Diagnostics::{
+            Debug::{DEBUG_EVENT, EXCEPTION_RECORD},
+            Etw::EVENT_FILTER_DESCRIPTOR,
         },
     },
 };

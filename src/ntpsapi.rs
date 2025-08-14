@@ -1,32 +1,35 @@
-use windows_sys::Win32::{
-    Foundation::{HANDLE, NTSTATUS, UNICODE_STRING},
-    Security::SECURITY_QUALITY_OF_SERVICE,
-    System::{
-        Diagnostics::Debug::{CONTEXT, LDT_ENTRY},
-        JobObjects::{
-            JOBOBJECTINFOCLASS, JOBOBJECT_BASIC_ACCOUNTING_INFORMATION,
-            JOB_SET_ARRAY,
+use windows_sys::{
+    Wdk::Foundation::OBJECT_ATTRIBUTES,
+    Win32::{
+        Foundation::{HANDLE, NTSTATUS, UNICODE_STRING},
+        Security::SECURITY_QUALITY_OF_SERVICE,
+        System::{
+            Diagnostics::Debug::{CONTEXT, LDT_ENTRY},
+            JobObjects::{
+                JOBOBJECTINFOCLASS, JOBOBJECT_BASIC_ACCOUNTING_INFORMATION,
+                JOB_SET_ARRAY,
+            },
+            Kernel::{
+                LIST_ENTRY, NT_PRODUCT_TYPE, PROCESSOR_NUMBER,
+                SINGLE_LIST_ENTRY,
+            },
+            Performance::HardwareCounterProfiling::HARDWARE_COUNTER_TYPE,
+            SystemServices::{
+                MAX_HW_COUNTERS, PROCESS_MITIGATION_ASLR_POLICY,
+                PROCESS_MITIGATION_BINARY_SIGNATURE_POLICY,
+                PROCESS_MITIGATION_CHILD_PROCESS_POLICY,
+                PROCESS_MITIGATION_CONTROL_FLOW_GUARD_POLICY,
+                PROCESS_MITIGATION_DYNAMIC_CODE_POLICY,
+                PROCESS_MITIGATION_EXTENSION_POINT_DISABLE_POLICY,
+                PROCESS_MITIGATION_FONT_DISABLE_POLICY,
+                PROCESS_MITIGATION_IMAGE_LOAD_POLICY,
+                PROCESS_MITIGATION_PAYLOAD_RESTRICTION_POLICY,
+                PROCESS_MITIGATION_STRICT_HANDLE_CHECK_POLICY,
+                PROCESS_MITIGATION_SYSTEM_CALL_DISABLE_POLICY,
+                PROCESS_MITIGATION_SYSTEM_CALL_FILTER_POLICY,
+            },
+            Threading::{IO_COUNTERS, PROCESS_MITIGATION_POLICY},
         },
-        Kernel::{
-            LIST_ENTRY, NT_PRODUCT_TYPE, PROCESSOR_NUMBER, SINGLE_LIST_ENTRY,
-        },
-        Performance::HardwareCounterProfiling::HARDWARE_COUNTER_TYPE,
-        SystemServices::{
-            MAX_HW_COUNTERS, PROCESS_MITIGATION_ASLR_POLICY,
-            PROCESS_MITIGATION_BINARY_SIGNATURE_POLICY,
-            PROCESS_MITIGATION_CHILD_PROCESS_POLICY,
-            PROCESS_MITIGATION_CONTROL_FLOW_GUARD_POLICY,
-            PROCESS_MITIGATION_DYNAMIC_CODE_POLICY,
-            PROCESS_MITIGATION_EXTENSION_POINT_DISABLE_POLICY,
-            PROCESS_MITIGATION_FONT_DISABLE_POLICY,
-            PROCESS_MITIGATION_IMAGE_LOAD_POLICY,
-            PROCESS_MITIGATION_PAYLOAD_RESTRICTION_POLICY,
-            PROCESS_MITIGATION_STRICT_HANDLE_CHECK_POLICY,
-            PROCESS_MITIGATION_SYSTEM_CALL_DISABLE_POLICY,
-            PROCESS_MITIGATION_SYSTEM_CALL_FILTER_POLICY,
-        },
-        Threading::{IO_COUNTERS, PROCESS_MITIGATION_POLICY},
-        WindowsProgramming::OBJECT_ATTRIBUTES,
     },
 };
 
@@ -970,21 +973,21 @@ EXTERN! {extern "system" {
         ProcessHandle: HANDLE,
     ) -> NTSTATUS;
 }}
-pub const NtCurrentProcess: HANDLE = -1;
+pub const NtCurrentProcess: HANDLE = -1 as _;
 pub const ZwCurrentProcess: HANDLE = NtCurrentProcess;
-pub const NtCurrentThread: HANDLE = -2;
+pub const NtCurrentThread: HANDLE = -2 as _;
 pub const ZwCurrentThread: HANDLE = NtCurrentThread;
-pub const NtCurrentSession: HANDLE = -3;
+pub const NtCurrentSession: HANDLE = -3 as _;
 pub const ZwCurrentSession: HANDLE = NtCurrentSession;
 #[inline]
 #[cfg(not(target_arch = "aarch64"))]
 pub unsafe fn NtCurrentPeb() -> PPEB {
     (*NtCurrentTeb()).ProcessEnvironmentBlock
 }
-pub const NtCurrentProcessToken: HANDLE = -4;
-pub const NtCurrentThreadToken: HANDLE = -5;
-pub const NtCurrentEffectiveToken: HANDLE = -6;
-pub const NtCurrentSilo: HANDLE = -1;
+pub const NtCurrentProcessToken: HANDLE = -4 as _;
+pub const NtCurrentThreadToken: HANDLE = -5 as _;
+pub const NtCurrentEffectiveToken: HANDLE = -6 as _;
+pub const NtCurrentSilo: HANDLE = -1 as _;
 #[inline]
 #[cfg(not(target_arch = "aarch64"))]
 pub unsafe fn NtCurrentProcessId() -> HANDLE {
@@ -1114,7 +1117,7 @@ EXTERN! {extern "system" {
         ApcArgument3: *mut c_void,
     ) -> NTSTATUS;
 }}
-pub const APC_FORCE_THREAD_SIGNAL: HANDLE = 1;
+pub const APC_FORCE_THREAD_SIGNAL: HANDLE = 1 as _;
 EXTERN! {extern "system" {
     fn NtQueueApcThreadEx(
         ThreadHandle: HANDLE,

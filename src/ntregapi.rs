@@ -1,6 +1,6 @@
-use windows_sys::Win32::{
-    Foundation::{HANDLE, NTSTATUS, UNICODE_STRING},
-    System::WindowsProgramming::OBJECT_ATTRIBUTES,
+use windows_sys::{
+    Wdk::Foundation::OBJECT_ATTRIBUTES,
+    Win32::Foundation::{HANDLE, NTSTATUS, UNICODE_STRING},
 };
 
 use crate::{
